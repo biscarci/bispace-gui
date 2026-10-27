@@ -1,0 +1,287 @@
+@import "@fontsource-variable/urbanist/wght.css";
+@import "@fontsource/roboto-mono/400.css";
+@import "@fontsource/roboto-mono/500.css";
+
+/* Tailwind genera anche le classi usate dai componenti della libreria. */
+@source "./";
+
+/*
+ * Tema "Tavola" di @bispace/ui, versione chiara: sfondo grigio-azzurro con un alone leggero,
+ * superfici bianche molto arrotondate, ombre morbide, un colore di accento, card pastello per gli
+ * stati. Solo tema chiaro. Si usa dopo `@import "tailwindcss";` e ogni progetto può ridefinire
+ * i token in un suo blocco @theme (es. l'accento --color-brand*). Guida: STILE.md.
+ */
+@theme {
+  /* Fondi e superfici */
+  --color-ground: #eef1f6;
+  /* Fondo grigio-azzurro per colonne e vassoi (es. colonne della bacheca). Nome storico. */
+  --color-side: #e6eaf1;
+  /* Blu notte di servizio: suggerimenti (tooltip), toast, pulsante tondo "scuro". Il binario e la
+     barra flottante da smartphone sono chiari (bianco, decisione del committente del 20/10/2026). */
+  --color-binario: #262f43;
+  --color-binario-2: #343e55;
+  --color-surface: #ffffff;
+  /* Hover, campi, chip neutri, riquadri interni. */
+  --color-surface-2: #f3f5f9;
+  --color-surface-3: #e8ecf2;
+  /* Bordi quasi invisibili: le card si staccano con l'ombra, non col bordo. */
+  --color-rule: #d6dce5;
+  --color-rule-soft: #e8ecf2;
+
+  /* Testo: ink 16:1, ink-soft 8,6:1, ink-faint 5,8:1 sul bianco (≥ 4,5:1 anche su ground e *-wash). */
+  --color-ink: #1b1f29;
+  --color-ink-soft: #454c59;
+  --color-ink-faint: #5f6676;
+
+  /* Accento (voce attiva, pulsante principale, link, focus, ritardi e blocchi). Predefinito:
+     indaco; ogni progetto lo ridefinisce. brand e brand-bright devono restare ≥ 4,5:1 su
+     bianco, brand-wash e brand-soft. */
+  --color-brand: #3a2f9e;
+  --color-brand-bright: #4a3fc0;
+  --color-brand-wash: #eeedfa;
+  /* Accento tenue più carico: voce di menu attiva, filtro scelto. */
+  --color-brand-soft: #e0def6;
+
+  /* Colori di stato: testo sul fondo *-wash sempre ≥ 5:1. */
+  --color-ok: #1f6b45;
+  --color-ok-wash: #e3f3ea;
+  --color-warn: #8a5a08;
+  --color-warn-wash: #f8efdc;
+  --color-info: #2f5d8a;
+  --color-info-wash: #e6eef8;
+
+  /* Card pastello di stato (CardStato): menta = ok/pronto, rosa = attenzione/ritardo,
+     sabbia = nuovo/in attesa/cantiere, cielo = in corso, notte = chiuso/archiviato.
+     Sopra il pastello si scrive solo in ink o ink-soft (≥ 5,8:1). */
+  --color-menta: #bfe5d2;
+  --color-menta-chiaro: #d3eee0;
+  --color-rosa: #f3cccc;
+  --color-rosa-chiaro: #f8dfde;
+  --color-sabbia: #f1dfb2;
+  --color-sabbia-chiaro: #f6eacb;
+  --color-cielo: #cfe0f3;
+  --color-cielo-chiaro: #e0ebf8;
+  --color-notte: #27314a;
+  --color-notte-chiaro: #36415e;
+  /* Accento sulla card blu notte (testo chiaro e fondi scuri): da ridefinire insieme a --color-brand. */
+  --color-brand-su-notte: #c9c4ff;
+  --color-brand-wash-notte: #3d3c6e;
+  --color-brand-soft-notte: #45437a;
+
+  /* Tratteggio di assenze approvate e fasi in pausa. */
+  --color-hatch: #e3e7ee;
+  /* Verde WhatsApp scurito per il contrasto AA del testo bianco. */
+  --color-whatsapp: #0f7a5c;
+
+  /* Raggi: card grandi 26 px, riquadri interni 16 px; pulsanti, filtri e badge a pillola (rounded-full). */
+  --radius-card: 1.625rem;
+  --radius-interno: 1rem;
+  --radius-campo: 0.875rem;
+
+  /* Ombre morbide e diffuse. */
+  --shadow-morbida: 0 1px 2px rgb(30 41 66 / 0.04), 0 10px 30px -12px rgb(30 41 66 / 0.14);
+  --shadow-sollevata: 0 2px 6px rgb(30 41 66 / 0.06), 0 24px 48px -16px rgb(30 41 66 / 0.28);
+  --shadow-pulsante: 0 1px 2px rgb(30 41 66 / 0.06), 0 4px 12px -6px rgb(30 41 66 / 0.18);
+  --shadow-brand: 0 6px 18px -8px color-mix(in srgb, var(--color-brand) 55%, transparent);
+
+  /* Punti di rottura: md = tablet da 768 px, xl = computer da 1200 px,
+     2xl = computer largo da 1400 px (menu principale sulla stessa riga del logo). */
+  --breakpoint-xl: 75rem;
+  --breakpoint-2xl: 87.5rem;
+
+  --font-sans: "Ordinali", "Urbanist Variable", "Urbanist", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Roboto Mono", ui-monospace, monospace;
+}
+
+/* Urbanist disegna ª e º come lettere normali ("3a fase"): solo per questi due caratteri si usa
+   un carattere di sistema che li ha in apice (unicode-range). Senza, resta Urbanist. */
+@font-face {
+  font-family: "Ordinali";
+  src: local("Helvetica Neue"), local("HelveticaNeue"), local("Arial"), local("Roboto"), local("Segoe UI");
+  unicode-range: U+00AA, U+00BA;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-ground);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    /* Mai scorrimento orizzontale della pagina (le tabelle scorrono nel loro riquadro). */
+    overflow-x: clip;
+  }
+  /* Sfondo grigio-azzurro con un alone leggero (accento tenue in alto a destra, azzurro a sinistra). */
+  /* Il fondo lo dà html: un fondo su body coprirebbe l'alone (z-index -1). */
+  body {
+    min-height: 100dvh;
+  }
+  /* L'alone sta in un livello fisso dietro la pagina (background-attachment: fixed non va su iOS). */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(60rem 36rem at 92% -8%, color-mix(in srgb, var(--color-brand) 6%, transparent), transparent 70%),
+      radial-gradient(52rem 40rem at -6% 18%, rgb(120 150 205 / 0.16), transparent 70%),
+      radial-gradient(70rem 50rem at 50% 110%, rgb(160 175 215 / 0.18), transparent 70%);
+  }
+  a {
+    color: var(--color-brand-bright);
+  }
+  a:hover {
+    color: var(--color-brand);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+  /* Dentro i contenitori che ritagliano (overflow) il contorno si disegna all'interno,
+     altrimenti verrebbe tagliato (Sì/No, menu, barra delle fasi). */
+  .focus-interno :focus-visible {
+    outline-offset: -2px;
+  }
+  /* Icone a tratto con spessore uniforme 1,8. Vale per le icone con lo spessore
+     predefinito di lucide (2); quelle con uno spessore scelto apposta lo mantengono. */
+  svg.lucide[stroke-width="2"] {
+    stroke-width: 1.8;
+  }
+}
+
+@layer components {
+  /* Superficie bianca grande (riquadri, tabelle, moduli). */
+  .card {
+    @apply rounded-card border border-white/70 bg-surface shadow-morbida;
+  }
+  /* Riquadro interno (dentro una card): grigio chiarissimo, 16 px. */
+  .card-interna {
+    @apply rounded-interno bg-surface-2;
+  }
+  /* Pulsanti a pillola alti 40 px, 44 px su smartphone e tablet al tocco;
+     su smartphone anche i pulsanti solo icona sono larghi almeno 44 px. */
+  .btn {
+    @apply inline-flex min-h-10 max-xl:min-h-11 max-md:min-w-11 items-center justify-center gap-2 rounded-full border border-rule-soft bg-surface px-4 text-[13px] font-semibold text-ink no-underline shadow-pulsante hover:bg-surface-2 hover:text-ink disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-pri {
+    @apply border-brand bg-brand text-white shadow-brand hover:bg-brand-bright hover:text-white;
+  }
+  /* Pulsante tondo solo icona (+, ↗, …): 40 px, 44 px sotto i 1200 px. Serve un nome accessibile. */
+  .btn-tondo {
+    @apply inline-grid size-10 shrink-0 place-items-center rounded-full border border-rule-soft bg-surface text-ink no-underline shadow-pulsante hover:bg-surface-2 hover:text-ink disabled:cursor-not-allowed disabled:opacity-60 max-xl:size-11;
+  }
+  .lbl {
+    @apply text-xs font-semibold tracking-[0.06em] text-ink-faint uppercase;
+  }
+  /* Al focus: bordo brand e contorno da 2 px del livello base. */
+  .campo {
+    @apply min-h-10 max-xl:min-h-11 w-full rounded-campo border border-rule bg-surface px-3.5 text-sm text-ink focus:border-brand;
+  }
+  /* Freccia dei menu a tendina disegnata qui: quella nativa resta attaccata al bordo arrotondato. */
+  select.campo {
+    @apply appearance-none bg-no-repeat pr-10;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%235f6676' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-position: right 0.875rem center;
+  }
+  /* Badge a pillola (contatori, stati brevi). Il colore lo dà il tono: vedi CLASSI_TONO. */
+  .pillola {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap;
+  }
+
+  /* Tinte delle card pastello (CardStato). Il testo tenue dentro il pastello diventa ink-soft
+     e i colori di stato si scuriscono, così il contrasto resta ≥ 4,5:1. */
+  .tinta-menta,
+  .tinta-rosa,
+  .tinta-sabbia,
+  .tinta-cielo {
+    --color-ink-faint: var(--color-ink-soft);
+    --color-ok: #17573a;
+    --color-warn: #6e4706;
+    --color-info: #244b71;
+    --color-brand-bright: var(--color-brand);
+    color: var(--color-ink);
+  }
+  .tinta-menta {
+    background: linear-gradient(160deg, var(--color-menta-chiaro), var(--color-menta));
+  }
+  .tinta-rosa {
+    background: linear-gradient(160deg, var(--color-rosa-chiaro), var(--color-rosa));
+  }
+  .tinta-sabbia {
+    background: linear-gradient(160deg, var(--color-sabbia-chiaro), var(--color-sabbia));
+  }
+  .tinta-cielo {
+    background: linear-gradient(160deg, var(--color-cielo-chiaro), var(--color-cielo));
+  }
+  /* Blu notte: testo bianco; i grigi diventano bianchi semitrasparenti ad alto contrasto. */
+  .tinta-notte {
+    --color-ink: #ffffff;
+    --color-ink-soft: #dfe4ee;
+    --color-ink-faint: #c5ccda;
+    --color-surface: #3a4562;
+    --color-surface-2: #313b55;
+    --color-rule: #4a5574;
+    --color-rule-soft: #414c69;
+    --color-brand-bright: var(--color-brand-su-notte);
+    --color-ok: #9be0bd;
+    --color-warn: #f3d28c;
+    --color-info: #b8d2f2;
+    --color-ok-wash: #2e4f55;
+    --color-warn-wash: #4d4a48;
+    --color-info-wash: #354a70;
+    --color-brand-wash: var(--color-brand-wash-notte);
+    --color-brand-soft: var(--color-brand-soft-notte);
+    --color-surface-3: #414c69;
+    color: var(--color-ink);
+    background: linear-gradient(160deg, var(--color-notte-chiaro), var(--color-notte));
+  }
+}
+
+@layer utilities {
+  /* Il tratteggio segnala provvisorio e in pausa anche senza colore. */
+  .tratteggio-pausa {
+    background: repeating-linear-gradient(135deg, var(--color-rule) 0 3px, transparent 3px 6px);
+  }
+  .tratteggio-assenza {
+    background: repeating-linear-gradient(135deg, var(--color-hatch) 0 6px, transparent 6px 12px);
+  }
+  .tratteggio-attesa {
+    background: repeating-linear-gradient(135deg, var(--color-warn-wash) 0 6px, transparent 6px 12px);
+  }
+}
+
+/* Scorrimento orizzontale senza barra visibile (pillole del menu da smartphone). */
+/* Barra di scorrimento sottile e arrotondata (bacheche, pannelli). */
+@utility barra-sottile {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-rule) transparent;
+}
+
+@utility senza-barra {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Suggerimento (tooltip) delle icone del binario e dei pulsanti tondi: compare al passaggio,
+   al tocco e al focus. Il testo è aria-hidden: il nome accessibile è nel pulsante. */
+.suggerimento {
+  display: none;
+}
+.group:hover > .suggerimento,
+.group:active > .suggerimento,
+.group:focus-visible > .suggerimento {
+  display: block;
+}
+
+/* Da tablet il nome della voce del menu compare al passaggio, al tocco e al focus.
+   Fuori da @media (hover: hover), a differenza di group-hover di Tailwind: sull'iPad (hover: none)
+   il dito produce :hover e :active, che qui bastano. Da computer (≥ 1200 px) il testo è già nel menu. */
+@media (width < 75rem) {
+  .group:hover > .etichetta-menu,
+  .group:active > .etichetta-menu,
+  .group:focus-visible > .etichetta-menu {
+    display: block;
+  }
+}
